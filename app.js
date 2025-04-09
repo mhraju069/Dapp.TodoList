@@ -1,6 +1,3 @@
-let provider;
-let signer;
-let contract;
 
 const contractAddress = "0x8a11748f0e0600aafdedee205deab5b9bb534cf0"; // Replace with your deployed contract address
 const contractABI = [
@@ -48,6 +45,10 @@ const contractABI = [
     // Add your contract ABI here
     // Example ABI, replace it with your contract's ABI from Remix
 ];
+let provider;
+let signer;
+let contract;
+
 
 // Initialize provider and contract only if MetaMask is connected
 async function connectToMetaMask() {
