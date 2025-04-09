@@ -1,27 +1,33 @@
 <!DOCTYPE html>
-<html ang="en">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
-    <title>ToDo DApp</title>
-    <style>
-        body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        margin: 20px;
-    }
-    </style>
+    <title>ToDo Dapp</title>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>  <!-- Include Ethers.js -->
+    <link rel="stylesheet" href="style.css">  <!-- Link to your CSS file -->
 </head>
 <body>
-    <h1>My ToDo DApp</h1>
-    <button id="connectButton">Connect to MetaMask</button>
-    <input type="text" id="taskInput" placeholder="Add a task" />
-    <button id="addTaskButton">Add Task</button>
-    <ul id="taskList"></ul>
+    <div class="container">
+        <h1>ToDo Dapp</h1>
 
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.min.js"></script>
-    <script src="app.js"></script>
+        <!-- Connect MetaMask Button -->
+        <button id="connectButton">Connect to MetaMask</button>
+
+        <!-- Display the connected MetaMask address -->
+        <p id="metaAddress">Not connected</p>
+
+        <!-- Input and Add Task Button -->
+        <input type="text" id="taskInput" placeholder="Enter task">
+        <button id="addTaskButton">Add Task</button>
+
+        <!-- Show Tasks Button -->
+        <button id="showTasksButton">Show Tasks</button>
+
+        <!-- Task List -->
+        <ul id="taskList"></ul>
+    </div>
+
+    <script src="app.js"></script>  <!-- Link to your JavaScript file -->
 </body>
 </html>
