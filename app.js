@@ -70,7 +70,7 @@ async function connectToMetaMask() {
     }
 }
 
-// Ensure the contract is properly initialized before calling functions
+// Ensure the contract is properly initialized before calling functions// Ensure the contract is properly initialized before calling functions
 async function showTasks() {
     if (!contract) {
         alert("Please connect to MetaMask first.");
