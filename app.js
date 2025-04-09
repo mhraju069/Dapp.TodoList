@@ -1,3 +1,7 @@
+let provider;
+let signer;
+let contract;
+
 const contractAddress = "0x8a11748f0e0600aafdedee205deab5b9bb534cf0"; // Replace with your deployed contract address
 const contractABI = [
     [
@@ -45,73 +49,39 @@ const contractABI = [
     // Example ABI, replace it with your contract's ABI from Remix
 ];
 
-let provider;
-let signer;
-let contract;
+// Initialize provider and contract only if MetaMask is connected
 
 async function connectToMetaMask() {
     if (typeof window.ethereum !== 'undefined') {
-        // Create a new instance of the Web3 provider using MetaMask
         provider = new ethers.providers.Web3Provider(window.ethereum);
-
-        // Request the user's Ethereum accounts
         try {
-            await provider.send("eth_requestAccounts", []);  // Requesting the user's accounts from MetaMask
-            signer = provider.getSigner();  // Get the signer to interact with the blockchain
-            const userAddress = await signer.getAddress();  // Get the user's address
-            console.log("Connected with address:", userAddress);
-            document.getElementById('metaAddress').textContent = `Connected Address: ${userAddress}`;
-
-            // Create contract instance
+            await provider.send("eth_requestAccounts", []);
+            signer = provider.getSigner();
+            const userAddress = await signer.getAddress();
+            document.getElementById('metaAddress').textContent = `Connected: ${userAddress}`;
+            
             contract = new ethers.Contract(contractAddress, contractABI, signer);
-
         } catch (error) {
-            console.error("User denied account access", error);
-            alert("Please allow MetaMask to connect to your account!");
+            console.error("MetaMask connection error:", error);
+            alert("Error connecting to MetaMask");
         }
     } else {
-        alert("Please install MetaMask to use this app!");
+        alert("Please install MetaMask!");
     }
 }
 
-async function addTask() {
-    const taskInput = document.getElementById('taskInput');
-    const task = taskInput.value;
-
-    if (task === "") {
-        alert("Please enter a task!");
+// Ensure the contract is properly initialized before calling functions
+async function showTasks() {
+    if (!contract) {
+        alert("Please connect to MetaMask first.");
         return;
     }
 
-    // Call the addTask function from the contract
     try {
-        const tx = await contract.addTask(task);
-        await tx.wait();
-        console.log("Task added:", task);
-        alert("Task added successfully!");
-        taskInput.value = '';  // Clear the input field
-    } catch (error) {
-        console.error("Error adding task:", error);
-        alert("Failed to add task!");
-    }
-}
-
-// Ensure the contract is initialized before calling functions
-if (contract) {
-    const tasks = await contract.getTasks();
-    // Continue with your logic
-} else {
-    alert("Contract not initialized. Please connect MetaMask first.");
-}
-
-async function showTasks() {
-    try {
-        // Call the getTasks function from the contract
         const tasks = await contract.getTasks();
         const taskList = document.getElementById('taskList');
-        taskList.innerHTML = '';  // Clear existing list
+        taskList.innerHTML = ''; // Clear previous tasks
 
-        // Display each task in the list
         tasks.forEach(task => {
             const li = document.createElement('li');
             li.textContent = task;
@@ -119,11 +89,9 @@ async function showTasks() {
         });
     } catch (error) {
         console.error("Error fetching tasks:", error);
-        alert("Failed to load tasks!");
+        alert("Failed to load tasks.");
     }
 }
 
-// Event listeners
 document.getElementById('connectButton').addEventListener('click', connectToMetaMask);
-document.getElementById('addTaskButton').addEventListener('click', addTask);
 document.getElementById('showTasksButton').addEventListener('click', showTasks);
