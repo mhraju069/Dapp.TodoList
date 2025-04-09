@@ -96,6 +96,14 @@ async function addTask() {
     }
 }
 
+// Ensure the contract is initialized before calling functions
+if (contract) {
+    const tasks = await contract.getTasks();
+    // Continue with your logic
+} else {
+    alert("Contract not initialized. Please connect MetaMask first.");
+}
+
 async function showTasks() {
     try {
         // Call the getTasks function from the contract
